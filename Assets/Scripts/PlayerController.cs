@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float speed;
+    [SerializeField] float speed, gravity;
 
     CharacterController characterController;
 
@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) 
+        Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), -gravity, Input.GetAxis("Vertical")) 
             * speed * Time.deltaTime;
 
         characterController.Move(movement);
