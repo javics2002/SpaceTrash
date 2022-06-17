@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class GameManager : MonoBehaviour
 
     uint day;
     const uint maxDays = 3;
+    [SerializeField] float secondsPerDay = 200;
+    float secondsToday;
 
     void Awake()
     {
@@ -33,7 +36,15 @@ public class GameManager : MonoBehaviour
             Destroy(this);
     }
 
-    public static GameManager getInstance()
+    private void Update()
+    {
+        secondsToday += Time.deltaTime;
+
+        if (secondsToday >= secondsPerDay)
+            TerminaDia();
+    }
+
+    public static GameManager GetInstance()
     {
         return instance;
     }
@@ -63,10 +74,19 @@ public class GameManager : MonoBehaviour
         //Solo guardo 10 records
         if (highscores[day].Count > maxHighscores)
             highscores[day].RemoveAt((int) maxHighscores);
+
+        day++;
+
+        //SceneManager.LoadScene(day == maxDays ? "");
     }
 
-    void AddPoints(uint points)
+    public void AddPoints(uint points)
     {
         score += points;
+    }
+
+    public float DayProgress()
+    {
+        return secondsToday / secondsPerDay;
     }
 }
