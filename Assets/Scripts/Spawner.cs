@@ -12,14 +12,8 @@ public class Spawner : MonoBehaviour
         InvokeRepeating("Spawn", spawnRate, spawnRate);
     }
 
-    
-    void Update()
-    {
-        
-    }
-
     void Spawn()
     {
-        Instantiate(trash);
+        Instantiate(trash, transform.position, transform.rotation);
     }
 }

@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] string[] dialogs;
     [SerializeField] float dialogTime;
+    [SerializeField] Vector2 dialogOffset;
     uint dialogsCount;
     RectTransform bocadilloTransform = null;
 
@@ -40,7 +41,7 @@ public class UIManager : MonoBehaviour
         points.SetText(GameManager.GetInstance().GetScore().ToString());
 
         if(bocadilloTransform != null)
-            bocadilloTransform.position = RectTransformUtility.WorldToScreenPoint(camera, boss.position);
+            bocadilloTransform.position = RectTransformUtility.WorldToScreenPoint(camera, boss.position) + dialogOffset;
     }
 
     //Añade un 0 delante del caracter, si la hora solo tiene un digito
