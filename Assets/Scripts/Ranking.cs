@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Ranking : MonoBehaviour
 {
@@ -8,18 +9,16 @@ public class Ranking : MonoBehaviour
 
     void Start()
     {
-        SortedList<uint, string> ranking = new SortedList<uint, string>
-        {
-            { 2000, "cano" },
-            { 2020, "pablo" },
-            { 2300, "belchi" },
-            { 2050, "david" },
-            { 2550, "jorge" }
-        };// = GameManager.GetInstance().GetRanking();
+        SortedList<uint, string> ranking = GameManager.GetInstance().GetRanking();
 
         foreach (var rank in ranking)
         {
-            Instantiate(rankingPrefab, transform);
+            GameObject prefab = Instantiate(rankingPrefab, transform);
+
+            TextMeshProUGUI[] texts = prefab.GetComponentsInChildren<TextMeshProUGUI>();
+
+            texts[0].SetText(rank.Value);
+            texts[1].SetText(rank.Key.ToString());
         }
     }
 
