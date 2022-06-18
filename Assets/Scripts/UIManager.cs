@@ -52,7 +52,7 @@ public class UIManager : MonoBehaviour
     void ShowText()
     {
         GameObject bocadillo = Instantiate(bocadilloPrefab, transform);
-        bocadillo.GetComponent<TextMeshProUGUI>().SetText(dialogs[dialogsCount++]);
+        bocadillo.GetComponentInChildren<TextMeshProUGUI>().SetText(dialogs[dialogsCount++]);
         bocadilloTransform = bocadillo.GetComponent<RectTransform>();
         Destroy(bocadillo, dialogTime);
 

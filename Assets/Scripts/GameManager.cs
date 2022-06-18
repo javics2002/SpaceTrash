@@ -13,8 +13,6 @@ public class GameManager : MonoBehaviour
     const uint maxHighscores = 10;
     string playerName;
 
-    [SerializeField] GameObject rankingPrefab;
-
     uint day;
     const uint maxDays = 3;
     [SerializeField] float secondsPerDay = 200;
@@ -49,9 +47,10 @@ public class GameManager : MonoBehaviour
         return instance;
     }
 
-    void IniciaDia()
+    public void IniciaDia()
     {
         score = 0;
+        SceneManager.LoadScene("Day" + (day + 1));
     }
 
     void TerminaDia()
@@ -75,9 +74,7 @@ public class GameManager : MonoBehaviour
         if (highscores[day].Count > maxHighscores)
             highscores[day].RemoveAt((int) maxHighscores);
 
-        day++;
-
-        //SceneManager.LoadScene(day == maxDays ? "");
+        SceneManager.LoadScene("Score");
     }
 
     public void AddPoints(uint points)
@@ -88,5 +85,10 @@ public class GameManager : MonoBehaviour
     public float DayProgress()
     {
         return secondsToday / secondsPerDay;
+    }
+
+    public SortedList<uint, string> GetRanking()
+    {
+        return highscores[day];
     }
 }
