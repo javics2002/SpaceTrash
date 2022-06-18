@@ -54,8 +54,22 @@ public class GameManager : MonoBehaviour
 
     public void IniciaDia()
     {
+        day++;
         score = 0;
-        SceneManager.LoadScene(day == maxDays ? "End" : "Day" + (day + 1));
+
+        if(day == maxDays)
+        {
+            day = 0;
+            SceneManager.LoadScene("End");
+        }
+        else
+            SceneManager.LoadScene("Day" + day);
+    }
+
+    public void IniciaDia(uint day)
+    {
+        score = 0;
+        SceneManager.LoadScene(day >= maxDays ? "End" : "Day" + day);
     }
 
     public void TerminaDia()
@@ -65,7 +79,7 @@ public class GameManager : MonoBehaviour
             try
             {
                 //Añade la puntuacion a la tabla
-                highscores[day].Add(score, playerName);
+                highscores[day - 1].Add(score, playerName);
                 break;
             }
             catch (ArgumentException)
@@ -76,8 +90,8 @@ public class GameManager : MonoBehaviour
         }
 
         //Solo guardo 10 records
-        if (highscores[day].Count > maxHighscores)
-            highscores[day].RemoveAt((int) maxHighscores);
+        if (highscores[day - 1].Count > maxHighscores)
+            highscores[day - 1].RemoveAt((int) maxHighscores);
 
         SceneManager.LoadScene("Score");
     }
@@ -95,6 +109,11 @@ public class GameManager : MonoBehaviour
     public uint GetScore()
     {
         return score;
+    }
+
+    public uint GetDay()
+    {
+        return day;
     }
 
     public float DayProgress()

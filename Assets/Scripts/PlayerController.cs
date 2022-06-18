@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(!carrying && other.tag == "PortableObject")
+        if(!carrying && other.CompareTag("PortableObject"))
             portableObject = other;
     }
 

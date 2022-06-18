@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         float time = GameManager.GetInstance().DayProgress();
+        time = time / 2 + 0.333333f;
 
         //Convertimos el tiempo en rango 0 a 1 en horas y minutos del dia
         byte hour = (byte)(time * 24),
