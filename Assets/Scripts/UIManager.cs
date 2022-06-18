@@ -10,10 +10,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject bocadilloPrefab;
     [SerializeField] Camera camera;
 
-    [SerializeField] string[] dialogs;
+    [SerializeField] string[] dialogsBoss, dialogsCoworker;
     [SerializeField] float dialogTime;
     [SerializeField] Vector2 dialogOffset;
     uint dialogsCount;
+    bool bossDone = false;
     RectTransform bocadilloTransform = null;
 
     private void Start()
@@ -41,7 +42,8 @@ public class UIManager : MonoBehaviour
         points.SetText(GameManager.GetInstance().GetScore().ToString());
 
         if(bocadilloTransform != null)
-            bocadilloTransform.position = RectTransformUtility.WorldToScreenPoint(camera, boss.position) + dialogOffset;
+            bocadilloTransform.position = RectTransformUtility
+                .WorldToScreenPoint(camera, bossDone ? coworker.position : boss.position) + dialogOffset;
     }
 
     //Añade un 0 delante del caracter, si la hora solo tiene un digito
@@ -54,11 +56,24 @@ public class UIManager : MonoBehaviour
     void ShowText()
     {
         GameObject bocadillo = Instantiate(bocadilloPrefab, transform);
-        bocadillo.GetComponentInChildren<TextMeshProUGUI>().SetText(dialogs[dialogsCount++]);
+        bocadillo.GetComponentInChildren<TextMeshProUGUI>()
+            .SetText(bossDone ? dialogsCoworker[dialogsCount++] : dialogsBoss[dialogsCount++]);
         bocadilloTransform = bocadillo.GetComponent<RectTransform>();
         Destroy(bocadillo, dialogTime);
 
-        if (dialogsCount == dialogs.Length)
+        if (bossDone && dialogsCount == dialogsCoworker.Length)
             CancelInvoke();
+        else if (!bossDone && dialogsCount == dialogsBoss.Length)
+        {
+            CancelInvoke();
+            Invoke("BossDone", dialogTime);
+        }
+    }
+
+    void BossDone()
+    {
+        dialogsCount = 0;
+        bossDone = true;
+        InvokeRepeating("ShowText", dialogTime, dialogTime + 0.5f);
     }
 }
