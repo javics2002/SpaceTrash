@@ -29,6 +29,11 @@ public class GameManager : MonoBehaviour
 
             playerName = "Robert";
             highscores = new SortedList<uint, string>[maxDays];
+
+            var descendingComparer = Comparer<uint>.Create((x, y) => y.CompareTo(x));
+
+            for (int i = 0; i < highscores.Length; i++)
+                highscores[i] = new SortedList<uint, string>((int) maxHighscores, descendingComparer);
         }
         else
             Destroy(this);
@@ -53,7 +58,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("Day" + (day + 1));
     }
 
-    void TerminaDia()
+    public void TerminaDia()
     {
         while (score > 0)
         {
@@ -80,6 +85,16 @@ public class GameManager : MonoBehaviour
     public void AddPoints(uint points)
     {
         score += points;
+    }
+
+    public void AddPoints()
+    {
+        score += 100;
+    }
+
+    public uint GetScore()
+    {
+        return score;
     }
 
     public float DayProgress()

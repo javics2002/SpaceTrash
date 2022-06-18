@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI clock;
+    [SerializeField] TextMeshProUGUI clock, points;
     [SerializeField] Transform coworker, boss;
     [SerializeField] GameObject bocadilloPrefab;
     [SerializeField] Camera camera;
@@ -37,6 +37,7 @@ public class UIManager : MonoBehaviour
         Add0(ref minuteString);
 
         clock.SetText(hourString + ":" + minuteString);
+        points.SetText(GameManager.GetInstance().GetScore().ToString());
 
         if(bocadilloTransform != null)
             bocadilloTransform.position = RectTransformUtility.WorldToScreenPoint(camera, boss.position);
