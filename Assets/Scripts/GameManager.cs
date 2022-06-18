@@ -118,6 +118,11 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("Score");
     }
 
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
     public void AddPoints(uint points)
     {
         score += points;

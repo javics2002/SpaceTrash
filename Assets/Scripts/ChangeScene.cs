@@ -19,6 +19,11 @@ public class ChangeScene : MonoBehaviour
         GameManager.GetInstance().AddPoints(100);
     }
 
+    public void VolverMenu()
+    {
+        GameManager.GetInstance().ReturnToMenu();
+    }
+
     public void Salir()
     {
         //GameManager.GetInstance().SaveData();
