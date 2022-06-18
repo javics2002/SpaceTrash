@@ -8,4 +8,20 @@ public class ChangeScene : MonoBehaviour
     {
         GameManager.GetInstance().IniciaDia();
     }
+
+    public void TerminaDia()
+    {
+        GameManager.GetInstance().TerminaDia();
+    }
+
+    public void SumaPuntos()
+    {
+        GameManager.GetInstance().AddPoints(100);
+    }
+
+    public void Salir()
+    {
+        GameManager.GetInstance().SaveData();
+        Application.Quit();
+    }
 }

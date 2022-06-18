@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -26,9 +28,18 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(this);
 
             //Leer del archivo de guardado si existe
+            SpaceTrashSave save = LoadData();
 
-            playerName = "Robert";
-            highscores = new SortedList<uint, string>[maxDays];
+            if(save != null)
+            {
+                playerName = save.playerName;
+                highscores = save.highscores;
+            }
+            else
+            {
+                playerName = "Robert";
+                highscores = new SortedList<uint, string>[maxDays];
+            }
 
             var descendingComparer = Comparer<uint>.Create((x, y) => y.CompareTo(x));
 
@@ -54,8 +65,22 @@ public class GameManager : MonoBehaviour
 
     public void IniciaDia()
     {
+        day++;
         score = 0;
-        SceneManager.LoadScene(day == maxDays ? "End" : "Day" + (day + 1));
+
+        if(day == maxDays)
+        {
+            day = 0;
+            SceneManager.LoadScene("End");
+        }
+        else
+            SceneManager.LoadScene("Day" + day);
+    }
+
+    public void IniciaDia(uint day)
+    {
+        score = 0;
+        SceneManager.LoadScene(day >= maxDays ? "End" : "Day" + day);
     }
 
     public void TerminaDia()
@@ -65,7 +90,7 @@ public class GameManager : MonoBehaviour
             try
             {
                 //Añade la puntuacion a la tabla
-                highscores[day].Add(score, playerName);
+                highscores[day - 1].Add(score, playerName);
                 break;
             }
             catch (ArgumentException)
@@ -76,8 +101,8 @@ public class GameManager : MonoBehaviour
         }
 
         //Solo guardo 10 records
-        if (highscores[day].Count > maxHighscores)
-            highscores[day].RemoveAt((int) maxHighscores);
+        if (highscores[day - 1].Count > maxHighscores)
+            highscores[day - 1].RemoveAt((int) maxHighscores);
 
         SceneManager.LoadScene("Score");
     }
@@ -97,6 +122,11 @@ public class GameManager : MonoBehaviour
         return score;
     }
 
+    public uint GetDay()
+    {
+        return day;
+    }
+
     public float DayProgress()
     {
         return secondsToday / secondsPerDay;
@@ -104,6 +134,46 @@ public class GameManager : MonoBehaviour
 
     public SortedList<uint, string> GetRanking()
     {
-        return highscores[day];
+        return highscores[day - 1];
+    }
+    
+    public string GetName()
+    {
+        return playerName;
+    }
+
+    public SortedList<uint, string>[] GetHighscores()
+    {
+        return highscores;
+    }
+
+    public void SaveData()
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        string path = Application.persistentDataPath + "/save.sps";
+        FileStream stream = new FileStream(path, FileMode.Create);
+
+        SpaceTrashSave data = new SpaceTrashSave(this);
+
+        formatter.Serialize(stream, data);
+        stream.Close();
+    }
+
+    public SpaceTrashSave LoadData()
+    {
+        string path = Application.persistentDataPath + "/save.sps";
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            SpaceTrashSave data = formatter.Deserialize(stream) as SpaceTrashSave;
+            stream.Close();
+
+            return data;
+        }
+        else
+            return null;
     }
 }
