@@ -10,11 +10,14 @@ public class Container : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("PortableObject"))
         {
-            if (type != Trash.TrashType.special && 
+            if (type != Trash.TrashType.special &&
                 collision.gameObject.GetComponentInChildren<Trash>().IsType(type))
                 GameManager.GetInstance().AddPoints(100);
+            else if (type == Trash.TrashType.special &&
+                collision.gameObject.GetComponentInChildren<Trash>().IsType(Trash.TrashType.radioactive))
+                GameManager.GetInstance().badEnding = true;
 
-            Destroy(collision.gameObject);
+                Destroy(collision.gameObject);
         }
     }
 }

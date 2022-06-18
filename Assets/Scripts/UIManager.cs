@@ -9,8 +9,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] Transform coworker, boss;
     [SerializeField] GameObject bocadilloPrefab;
     [SerializeField] Camera camera;
+    [SerializeField] Spawner spawner;
 
-    [SerializeField] string[] dialogsBoss, dialogsCoworker;
+    [SerializeField] string[] dialogsBoss, dialogsCoworker, specialDialoge;
     [SerializeField] float dialogTime;
     [SerializeField] Vector2 dialogOffset;
     uint dialogsCount;
@@ -63,7 +64,10 @@ public class UIManager : MonoBehaviour
         Destroy(bocadillo, dialogTime);
 
         if (bossDone && dialogsCount == dialogsCoworker.Length)
+        {
             CancelInvoke();
+            Invoke("SpawnSpecial", dialogTime * 2);
+        }
         else if (!bossDone && dialogsCount == dialogsBoss.Length)
         {
             CancelInvoke();
@@ -76,5 +80,25 @@ public class UIManager : MonoBehaviour
         dialogsCount = 0;
         bossDone = true;
         InvokeRepeating("ShowText", dialogTime, dialogTime + 0.5f);
+    }
+
+    void SpawnSpecial()
+    {
+        spawner.SpawnSpecial();
+        dialogsCount = 0;
+    }
+
+    public void ShowSpecialDialogue()
+    {
+        GameObject bocadillo = Instantiate(bocadilloPrefab, transform);
+        bocadillo.GetComponentInChildren<TextMeshProUGUI>()
+            .SetText(specialDialoge[dialogsCount++]);
+        bocadilloTransform = bocadillo.GetComponent<RectTransform>();
+        Destroy(bocadillo, dialogTime);
+
+        if (dialogsCount != specialDialoge.Length)
+            Invoke("ShowSpecialDialogue", dialogTime);
+        else if (GameManager.GetInstance().GetDay() == 3)
+            GameManager.GetInstance().goodEnding = true;
     }
 }

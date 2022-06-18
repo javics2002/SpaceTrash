@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class Coworker : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] UIManager uim;
 
-    // Update is called once per frame
-    void Update()
+    private void OnCollisionEnter(Collision collision)
     {
-        
+        if(collision.gameObject.CompareTag("PortableObject") && collision.gameObject.GetComponentInChildren<SpecialTrash>())
+        {
+            uim.ShowSpecialDialogue();
+            Destroy(collision.gameObject);
+        }
     }
 }

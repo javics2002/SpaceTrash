@@ -21,7 +21,7 @@ public class ChangeScene : MonoBehaviour
 
     public void Salir()
     {
-        GameManager.GetInstance().SaveData();
+        //GameManager.GetInstance().SaveData();
         Application.Quit();
     }
 }

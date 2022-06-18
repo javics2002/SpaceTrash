@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class Trash : MonoBehaviour
 {
-    [SerializeField] Sprite[] organica, minerales, tecnologica, radiactiva, especial;
+    [SerializeField] Sprite[] organica, minerales, tecnologica, radiactiva;
     public enum TrashType { organic, mineral, techno, radioactive, special };
 
     TrashType type;
 
     void Start()
     {
-        type = (TrashType) Random.Range(0, GameManager.GetInstance().GetDay() + 3);
+        type = (TrashType) Random.Range(0, GameManager.GetInstance().GetDay() + 1);
 
         GetComponent<SpriteRenderer>().sprite = RandomTrash();
+
+        Debug.Log(type);
     }
 
     void Update()
@@ -28,12 +30,6 @@ public class Trash : MonoBehaviour
         TrashType.techno => tecnologica[Random.Range(0, tecnologica.Length)],
         TrashType.radioactive => radiactiva[Random.Range(0, radiactiva.Length)]
     };
-
-    void SetSpecial(uint index)
-    {
-        type = TrashType.special;
-        GetComponent<SpriteRenderer>().sprite = especial[index];
-    }
 
     public bool IsType(TrashType t)
     {

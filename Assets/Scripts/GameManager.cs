@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] float secondsPerDay = 200;
     float secondsToday;
 
+    public bool goodEnding = false, badEnding = false;
+
     void Awake()
     {
         if (instance == null)
@@ -28,16 +30,17 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(this);
 
             //Leer del archivo de guardado si existe
-            SpaceTrashSave save = LoadData();
+            /*SpaceTrashSave save = LoadData();
 
             if(save != null)
             {
+                Debug.Log("Archivo encontrado");
                 playerName = save.playerName;
-                highscores = save.highscores;
+                highscores = save.GetHighscores();
             }
-            else
+            else*/
             {
-                playerName = "Robert";
+                playerName = Environment.UserName;
                 highscores = new SortedList<uint, string>[maxDays];
             }
 
@@ -68,10 +71,18 @@ public class GameManager : MonoBehaviour
         day++;
         score = 0;
 
-        if(day == maxDays)
+        if(day > maxDays)
         {
             day = 0;
-            SceneManager.LoadScene("End");
+
+            if(badEnding)
+                SceneManager.LoadScene("BadEnding");
+            else if(goodEnding)
+                SceneManager.LoadScene("GoodEnding");
+            else
+                SceneManager.LoadScene("End");
+
+            goodEnding = badEnding = false;
         }
         else
             SceneManager.LoadScene("Day" + day);
@@ -151,9 +162,9 @@ public class GameManager : MonoBehaviour
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/save.sps";
-        FileStream stream = new FileStream(path, FileMode.Create);
+        FileStream stream = new(path, FileMode.Create);
 
-        SpaceTrashSave data = new SpaceTrashSave(this);
+        SpaceTrashSave data = new(this);
 
         formatter.Serialize(stream, data);
         stream.Close();
