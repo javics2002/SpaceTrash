@@ -730,8 +730,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Highscores:'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 423fcecc27a0ff149b50fba708a9ea8f, type: 2}
+  m_sharedMaterial: {fileID: 9009093016624729016, guid: 423fcecc27a0ff149b50fba708a9ea8f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
