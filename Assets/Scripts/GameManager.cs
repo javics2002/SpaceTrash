@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
     public void IniciaDia()
     {
         score = 0;
-        SceneManager.LoadScene("Day" + (day + 1));
+        SceneManager.LoadScene(day == maxDays ? "End" : "Day" + (day + 1));
     }
 
     public void TerminaDia()
