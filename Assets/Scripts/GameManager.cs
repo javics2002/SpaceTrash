@@ -58,7 +58,10 @@ public class GameManager : MonoBehaviour
         secondsToday += Time.deltaTime;
 
         if (secondsToday >= secondsPerDay)
+        {
+            secondsToday = 0;
             TerminaDia();
+        }
     }
 
     public static GameManager GetInstance()
@@ -91,6 +94,7 @@ public class GameManager : MonoBehaviour
     public void IniciaDia(uint day)
     {
         score = 0;
+        secondsToday = 0;
         SceneManager.LoadScene(day >= maxDays ? "End" : "Day" + day);
     }
 
