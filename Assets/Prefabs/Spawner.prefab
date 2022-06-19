@@ -45,4 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trash: {fileID: 6898109960811686592, guid: 449cb161a81757e47a286c4f9baaa0bd, type: 3}
+  specialTrash:
+  - {fileID: 6898109960811686592, guid: e17aa42f1307d674189d1ac81d17879c, type: 3}
+  - {fileID: 6898109960811686592, guid: cbeac84895481c94e8533f028f682724, type: 3}
+  - {fileID: 6898109960811686592, guid: f3f751e581157694eab993eca0bfa9c8, type: 3}
   spawnRate: 2
